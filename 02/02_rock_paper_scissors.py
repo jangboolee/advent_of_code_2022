@@ -29,8 +29,8 @@ outcome_score = {('A', 'X'): 3,
 # Calculate total score according to the strategy guide assumption
 total_score = 0
 for round in f_content:
-    total_score += shape_score[round[1]] # Add score for shape selection
-    total_score += outcome_score[round] # Add score for outcome
+    total_score += shape_score[round[1]]  # Add score for shape selection
+    total_score += outcome_score[round]   # Add score for outcome
 
 # Solution to part 1
 print(f'The score according to the strategy guide would be {total_score}.')
@@ -57,11 +57,11 @@ outcome_shape = {('A', 'X'): 'C',
                  ('C', 'Y'): 'C',
                  ('C', 'Z'): 'A'}
 
-# Calculate true total score according to the actual strategy guide interpretation
+# Calculate true total score according to actual strategy guide interpretation
 true_total_score = 0
 for round in f_content:
-    true_total_score += outcome_score[round[1]] # Add score for outcome
-    true_total_score += shape_score[outcome_shape[round]] # Add score for shape selection
+    true_total_score += outcome_score[round[1]]   # Add score for outcome
+    true_total_score += shape_score[outcome_shape[round]]  # Add shape score
 
 # Solution to part 2
 print(f'The true score would be {true_total_score}.')
