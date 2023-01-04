@@ -25,4 +25,16 @@ for item in f_content:
 max_calorie = max(calories.values())
 max_elf = max(calories, key=calories.get)
 
-print(f'Elf #{max_elf} is carrying the maximum calories of {max_calorie}')
+# Solution to part 1
+print(f'Elf #{max_elf} is carrying the maximum calories of {max_calorie}.')
+
+# Sort dictionary based on carried calories
+sorted_calories = sorted(calories.items(), key=lambda x: x[1], reverse=True)
+
+# Get the total calories from the top three elves
+top_3_total = 0
+for elf, calorie in sorted_calories[:3]:
+    top_3_total += calorie
+
+# Solution to part 2
+print(f'The top three elves are carrying a total of {top_3_total} calories.')
