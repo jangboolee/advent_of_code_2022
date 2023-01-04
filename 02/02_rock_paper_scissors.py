@@ -63,4 +63,5 @@ for round in f_content:
     true_total_score += outcome_score[round[1]] # Add score for outcome
     true_total_score += shape_score[outcome_shape[round]] # Add score for shape selection
 
+# Solution to part 2
 print(f'The true score would be {true_total_score}.')
