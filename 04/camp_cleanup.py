@@ -1,0 +1,80 @@
+import os
+
+
+# Set directories for folder and input file
+main_folder = os.path.join(os.getcwd(), '04')
+input_file = os.path.join(main_folder, 'input.txt')
+
+# Read in input file as a list, with each pair split
+with open(input_file, 'r', encoding='utf-8') as f:
+    f_content = [line.rstrip().split(',') for line in f.readlines()]
+
+
+def convert_str_assignment(str_assignment):
+    """Helper function to convert assignment string into integers
+
+    Args:
+        str_assignment (str): String representation of an assignment
+        (ex: '14-28')
+
+    Returns:
+        range: A range generator function of the assignment
+    """
+
+    # Get a tuple of the beginning and end sections, converted to int
+    int_sections = tuple(int(str_section) for str_section
+                         in str_assignment.split('-'))
+
+    return range(int_sections[0], int_sections[1] + 1)
+
+
+# Create a list of tuples of assignments converted to range generators
+int_assignments = []
+for str_assignment_1, str_assignment_2 in f_content:
+    int_assignments.append((convert_str_assignment(str_assignment_1),
+                            convert_str_assignment(str_assignment_2)))
+
+
+def find_complete_overlap(smaller_range, larger_range):
+    """Helper function to find assignment pairs where one range
+    fully contains the other
+
+    Args:
+        smaller_range (range): A range of the smaller range to check if it's
+            fully contained within the larger range
+        larger_range (range): A range of the larger range to check if it fully
+            contains the smaller range
+
+    Returns:
+        Boolean: True if the smaller range is fully contained within the larger
+            range, False if not
+    """
+
+    # If both ranges are single section IDs
+    if len(smaller_range) == 1 and len(larger_range) == 1:
+        # Check if the two are identical
+        return smaller_range == larger_range
+    # If the smaller range is a single ID and the larger range is a range
+    elif len(smaller_range) == 1 and len(larger_range) > 1:
+        # Check if the single ID is contained in the larger range
+        return larger_range[0] <= smaller_range[0] <= larger_range[-1]
+    # If the smaller range is a range
+    # (Then by definition, the larger range is also a range)
+    elif len(smaller_range) > 1:
+        # Check if the smaller range is fully contained in the larger range
+        return (smaller_range[0] >= larger_range[0] and
+                smaller_range[-1] <= larger_range[-1])
+
+
+# Find all instances of fullly overlaping assignments
+complete_overlaps = 0
+for first_elf, second_elf in int_assignments:
+    if len(first_elf) <= len(second_elf):
+        complete_overlaps += find_complete_overlap(first_elf, second_elf)
+    else:
+        complete_overlaps += find_complete_overlap(second_elf, first_elf)
+
+# Solution to part 1
+print(f'There are {complete_overlaps} assignment pairs with full overlaps.')
+
+print('')
