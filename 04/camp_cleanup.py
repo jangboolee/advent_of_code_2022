@@ -62,8 +62,8 @@ def find_complete_overlap(smaller_range, larger_range):
     # (Then by definition, the larger range is also a range)
     elif len(smaller_range) > 1:
         # Check if the smaller range is fully contained in the larger range
-        return (smaller_range[0] >= larger_range[0] and
-                smaller_range[-1] <= larger_range[-1])
+        return (smaller_range[0] >= larger_range[0] <= smaller_range[-1]
+                <= larger_range[-1])
 
 
 # Find all instances of fullly overlaping assignments
@@ -77,4 +77,24 @@ for first_elf, second_elf in int_assignments:
 # Solution to part 1
 print(f'There are {complete_overlaps} assignment pairs with full overlaps.')
 
-print('')
+
+def find_partial_overlap(range_1, range_2):
+    """Check if two ranges share any overlap with each other
+
+    Args:
+        range_1 (range): First range to compare
+        range_2 (range): Second range to compare
+
+    Returns:
+        Boolean: True if there is any overlap, False if not
+    """
+
+    return len(set(range_1) - set(range_2)) != len(range_1)
+
+
+# Find all instances of partial overlaps
+partial_overlaps = 0
+for first_elf, second_elf in int_assignments:
+    partial_overlaps += find_partial_overlap(first_elf, second_elf)
+
+print(f'There are {partial_overlaps} assignment paris with partial overlaps.')
