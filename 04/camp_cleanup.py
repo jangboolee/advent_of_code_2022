@@ -50,20 +50,10 @@ def find_complete_overlap(smaller_range, larger_range):
             range, False if not
     """
 
-    # If both ranges are single section IDs
-    if len(smaller_range) == 1 and len(larger_range) == 1:
-        # Check if the two are identical
-        return smaller_range == larger_range
-    # If the smaller range is a single ID and the larger range is a range
-    elif len(smaller_range) == 1 and len(larger_range) > 1:
-        # Check if the single ID is contained in the larger range
-        return larger_range[0] <= smaller_range[0] <= larger_range[-1]
-    # If the smaller range is a range
-    # (Then by definition, the larger range is also a range)
-    elif len(smaller_range) > 1:
-        # Check if the smaller range is fully contained in the larger range
-        return (smaller_range[0] >= larger_range[0] <= smaller_range[-1]
-                <= larger_range[-1])
+    overlap_removed = set(larger_range) - set(smaller_range)
+    length_no_overlap = len(larger_range) - len(smaller_range)
+
+    return len(overlap_removed) == length_no_overlap
 
 
 # Find all instances of fullly overlaping assignments
