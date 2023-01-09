@@ -3,3 +3,6 @@
 
 # VS codium settings
 .vscode
+
+# Unit testing cache files
+__pycache__
