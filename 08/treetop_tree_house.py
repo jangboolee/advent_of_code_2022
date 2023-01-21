@@ -26,61 +26,65 @@ def read_input(folder_name: str, file_name: str) -> list:
     return tree_map
 
 
+def from_up(tree_map: list, row: int, col: int) -> list:
+    """Find the trees above the tree of interest
+
+    Args:
+        tree_map (list): List of lists representing the tree map
+        row (int): Row number for the tree of interest
+        col (int): Column number for the tree of interest
+
+    Returns:
+        list: List of the trees above the tree of interest
+    """
+    return [tree_row[col] for i, tree_row in enumerate(tree_map)
+            if i < row]
+
+
+def from_down(tree_map: list, row: int, col: int) -> list:
+    """Find the trees below the tree of interest
+
+    Args:
+        tree_map (list): List of lists representing the tree map
+        row (int): Row number for the tree of interest
+        col (int): Column number for the tree of interest
+
+    Returns:
+        list: List of the trees below the tree of interest
+    """
+    return [tree_row[col] for i, tree_row in enumerate(tree_map)
+            if i > row]
+
+
+def from_left(tree_map: list, row: int, col: int) -> list:
+    """Find the trees left of the tree of interest
+
+    Args:
+        tree_map (list): List of lists representing the tree map
+        row (int): Row number for the tree of interest
+        col (int): Column number for the tree of interest
+
+    Returns:
+        list: List of the trees left the tree of interest
+    """
+    return tree_map[row][0:col]
+
+
+def from_right(tree_map: list, row: int, col: int) -> list:
+    """Find the trees to the right of the tree of interest
+
+    Args:
+        tree_map (list): List of lists representing the tree map
+        row (int): Row number for the tree of interest
+        col (int): Column number for the tree of interest
+
+    Returns:
+        list: List of the trees right of the tree of interest
+    """
+    return tree_map[row][col+1:]
+
+
 def count_visible_trees(tree_map: list) -> int:
-
-    def max_from_up(tree_map: list, row: int, col: int) -> int:
-        """Helper function to return the maximum tree height when looking up
-
-        Args:
-            tree_map (list): List of lists representing the tree map
-            row (int): Row number for the tree of interest
-            col (int): Column number for the tree of interest
-
-        Returns:
-            int: Maximum height of the trees above the tree of interest
-        """
-        return max([tree_row[col] for i, tree_row in enumerate(tree_map)
-                    if i < row])
-
-    def max_from_down(tree_map: list, row: int, col: int) -> int:
-        """Helper function to return the maximum tree height when looking down
-
-        Args:
-            tree_map (list): List of lists representing the tree map
-            row (int): Row number for the tree of interest
-            col (int): Column number for the tree of interest
-
-        Returns:
-            int: Maximum height of the trees below the tree of interest
-        """
-        return max([tree_row[col] for i, tree_row in enumerate(tree_map)
-                    if i > row])
-
-    def max_from_left(tree_map: list, row: int, col: int) -> int:
-        """Helper function to return the maximum tree height when looking left
-
-        Args:
-            tree_map (list): List of lists representing the tree map
-            row (int): Row number for the tree of interest
-            col (int): Column number for the tree of interest
-
-        Returns:
-            int: Maximum height of the trees left of the tree of interest
-        """
-        return max(tree_map[row][0:col])
-
-    def max_from_right(tree_map: list, row: int, col: int) -> int:
-        """Helper function to return the maximum tree height when looking right
-
-        Args:
-            tree_map (list): List of lists representing the tree map
-            row (int): Row number for the tree of interest
-            col (int): Column number for the tree of interest
-
-        Returns:
-            int: Maximum height of the trees right of the tree of interest
-        """
-        return max(tree_map[row][col+1:])
 
     # Find the count of visible trees
     visible_count = 0
@@ -92,14 +96,14 @@ def count_visible_trees(tree_map: list) -> int:
 
             # If the tree is not in the first or last row
             if row > 0 and row < len(tree_map) - 1:
-                # If the tree is not int he first or last column
+                # If the tree is not in the first or last column
                 if col > 0 and col < len(tree_map[row]) - 1:
-                    # If the tree is less than or equal to the maximum tree
-                    # from all four directions
-                    if (max_from_up(tree_map, row, col) >= curr_tree and
-                        max_from_down(tree_map, row, col) >= curr_tree and
-                        max_from_left(tree_map, row, col) >= curr_tree and
-                            max_from_right(tree_map, row, col) >= curr_tree):
+                    # If the tree height is less than or equal to the
+                    # tallest tree from all four directions
+                    if (max(from_up(tree_map, row, col)) >= curr_tree and
+                        max(from_down(tree_map, row, col)) >= curr_tree and
+                        max(from_left(tree_map, row, col)) >= curr_tree and
+                            max(from_right(tree_map, row, col)) >= curr_tree):
                         # The tree is not visible, so skip the tree
                         continue
 
@@ -109,8 +113,22 @@ def count_visible_trees(tree_map: list) -> int:
     return visible_count
 
 
+# TODO: Create function to calculate scenic score per tree
+def calc_scenic_score(tree_map, row, col):
+
+    # Calculate scenic scores of 0 for trees on the edges
+    if (row == 0 or row == len(tree_map)
+            or col == 0 or col == len(tree_map[row])):
+        return 0
+    # For inner trees
+    else:
+        pass
+
+
 if __name__ == '__main__':
 
     tree_map = read_input('08', 'input.txt')
+
+    # Solution to part 1
     visible_trees = count_visible_trees(tree_map)
     print(f'There are {visible_trees} visible trees from outside the grid.')
