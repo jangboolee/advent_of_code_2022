@@ -37,6 +37,13 @@ class TestTreetopTreeHouse(unittest.TestCase):
         expected_2 = 12
         self.assertEqual(actual_2, expected_2)
 
+    def test_calc_max_scenic_score(self):
+
+        # Test using example case
+        ex_actual_2 = tth.calc_max_scenic_score(self.example_map)
+        ex_expected_2 = 8
+        self.assertEqual(ex_actual_2, ex_expected_2)
+
 
 if __name__ == '__main__':
 
